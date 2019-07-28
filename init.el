@@ -25,11 +25,20 @@
 (global-linum-mode t)
 (show-paren-mode t)
 (setq backup-inhibited t)
+(setq create-lockfiles nil)
 (setq scroll-step 1)
 (menu-bar-mode -1)
 (define-key key-translation-map [?\C-h] [?\C-?])
+(electric-pair-mode t)
+(column-number-mode 1)
+(global-auto-revert-mode 1)
 
-;;major-mode
+;major-mode
+;;(use-package lsp-mode
+;;  :ensure t
+;;  :hook (python-mode . lsp-deferred)
+;;  :commands (lsp lsp-deferred))
+
 (use-package rust-mode
   :ensure t
   :mode "\\.rs\\'")
@@ -37,6 +46,22 @@
 (use-package nasm-mode
   :ensure t
   :mode "\\.asm\\'")
+
+(use-package typescript-mode
+  :ensure t
+  :mode "\\.ts\\'")
+
+(use-package markdown-mode
+  :ensure t
+  :mode "\\.md\\'"
+  :bind((:map markdown-mode-map)
+	("C-M-y" . livedown-preview)))
+
+;; need to run the below command
+;; git clone https://github.com/shime/emacs-livedown.git ~/.emacs.d/emacs-livedown
+(add-to-list 'load-path (expand-file-name "~/.emacs.d/emacs-livedown"))
+(require 'livedown)
+
 
 ;;minor-mode
 (use-package counsel
@@ -72,6 +97,8 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(package-selected-packages (quote (use-package))))
+
+
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
