@@ -16,7 +16,7 @@
 ;; Enable use-package
 (eval-when-compile
   (require 'use-package))
-;(require 'diminish)                ;; if you use :diminish
+;;(require 'diminish)                ;; if you use :diminish
 (require 'bind-key)                ;; if you use any :bind variant
 
 ;;global settings
@@ -32,7 +32,27 @@
 (column-number-mode 1)
 (global-auto-revert-mode 1)
 
-;major-mode
+;; whitespace-mode
+(global-whitespace-mode 1)
+(setq whitespace-style '(face  ; display with face
+			 tabs
+                         spaces
+                         space-mark     ; mapping
+                         tab-mark))
+;; whitespace
+(set-face-foreground 'whitespace-space nil)
+(set-face-background 'whitespace-space "yellow")
+;; tab
+(set-face-foreground 'whitespace-tab nil)
+(set-face-background 'whitespace-tab "red")
+  (setq whitespace-display-mappings
+        '(
+          (space-mark ?\x3000 [?\□])
+          (tab-mark ?\t [?\u00BB ?\t] [?\\ ?\t])
+          ))
+
+
+;;major-mode
 (use-package rust-mode
   :ensure t
   :mode "\\.rs\\'")
@@ -65,9 +85,8 @@
   ("C-c j" . lsp-find-definition)
   :config
   (setq lsp-prefer-flymake nil)
-  (setq lsp-auto-guess-root t)
+  ;(setq lsp-auto-guess-root t)
   )
-
 
 ;;If I didn't install company-lsp,
 ;;completion occurs bug.
