@@ -32,27 +32,39 @@
 (column-number-mode 1)
 (global-auto-revert-mode 1)
 
+
+;;usually, settings about indentation are written for each language.
+;;indent settings
+(setq-default indent-tabs-mode nil) ;; use space, not tabs for indent
+(setq tab-stop-list (number-sequence 2 60 2))
+
 ;; whitespace-mode
 (global-whitespace-mode 1)
-(setq whitespace-style '(face  ; display with face
-			 tabs
-                         spaces
-                         space-mark     ; mapping
+;;(add-hook 'before-save-hook 'delete-trailing-whitespace)
+(setq whitespace-style '(face           ;display with face
+                         tabs
+                         ;;spaces
+                         trailing
+                         empty
+;;                         space-mark     ;mappings
                          tab-mark))
 ;; whitespace
-(set-face-foreground 'whitespace-space nil)
-(set-face-background 'whitespace-space "yellow")
+(set-face-foreground 'whitespace-space "color-51")
+(set-face-background 'whitespace-space nil)
 ;; tab
-(set-face-foreground 'whitespace-tab nil)
-(set-face-background 'whitespace-tab "red")
-  (setq whitespace-display-mappings
-        '(
-          (space-mark ?\x3000 [?\□])
-          (tab-mark ?\t [?\u00BB ?\t] [?\\ ?\t])
-          ))
+(set-face-foreground 'whitespace-tab "color-51")
+(set-face-background 'whitespace-tab nil)
+
+(setq whitespace-display-mappings
+      '(
+	(space-mark ?\x3000 [?\□])
+	(space-mark 32 [183] [46])
+	(tab-mark ?\t [?\u00BB ?\t] [?\\ ?\t])
+	))
 
 
 ;;major-mode
+;;(add-to-list 'load-path (expand-file-name "${HOME}/.cargo/bin/rls"))
 (use-package rust-mode
   :ensure t
   :mode "\\.rs\\'")
@@ -63,7 +75,34 @@
 
 (use-package typescript-mode
   :ensure t
-  :mode "\\.ts\\'")
+  :mode "\\.ts\\'"
+  :config
+  (setq typescript-indent-level 2))
+
+;;(use-package tide
+;;  :ensure t
+;;  :hook ((typescript-mode . tide-setup)
+;;         (typescript-mode . tide-hl-identifier-mode)
+;;         (before-save . tide-format-before-save)))
+
+(use-package web-mode
+  :ensure t
+  :mode (("\\.html?\\'" . web-mode)
+         ("\\.tsx\\'" . web-mode)
+         ("\\.jsx\\'" . web-mode))
+  :config
+  (setq web-mode-markup-indent-offset 2
+        web-mode-css-indent-offset 2
+        web-mode-code-indent-offset 2
+        web-mode-block-padding 2
+        web-mode-comment-style 2
+        ;;web-mode-offset 2
+        web-mode-enable-css-colorization t
+        web-mode-enable-auto-pairing t
+        ;;web-mode-enable-comment-keywords t
+        web-mode-enable-current-element-highlight t
+        )
+  )
 
 (use-package markdown-mode
   :ensure t
@@ -79,7 +118,8 @@
 (use-package lsp-mode
   :ensure t
   :hook ((python-mode . lsp)
-	 (rust-mode . lsp))
+	 (rust-mode . lsp)
+         (typescript-mode . lsp))
   :commands (lsp)
   :bind
   ("C-c j" . lsp-find-definition)
@@ -87,6 +127,7 @@
   (setq lsp-prefer-flymake nil)
   ;(setq lsp-auto-guess-root t)
   )
+
 
 ;;If I didn't install company-lsp,
 ;;completion occurs bug.
@@ -100,7 +141,7 @@
   :commands helm-lsp-workspace-symbol)
 ;;(use-package lsp-treemacs :commands lsp-treemacs-errors-list)
 
-;; sntence wrap of lsp-ui-doc doesn't work correctly when we split views.
+;; sentence wrap of lsp-ui-doc doesn't work correctly when we split views.
 (use-package lsp-ui
   :ensure t
   :hook
@@ -130,9 +171,14 @@
   ;for python3 syntax
   (setq flycheck-python-pycompile-executable "python3"
 	flycheck-python-pylint-executable "python3"
-	flycheck-python-flake8-executable "python3")
-  ;;(setq flycheck-display-errors-delay 0.3)
+	flycheck-python-flake8-executable "python3"
+        )
   (set-face-foreground 'flycheck-error "#FF0461")
+  )
+
+(use-package flycheck-rust
+  :ensure t
+  :config (add-hook 'flycheck-mode-hook #'flycheck-rust-setup)
   )
 
 (use-package company
@@ -160,10 +206,7 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(package-selected-packages
-   (quote
-    (yasnippet use-package typescript-mode rust-mode nasm-mode multiple-cursors helm flycheck company))))
-
+ '(package-selected-packages (quote (tide))))
 
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
