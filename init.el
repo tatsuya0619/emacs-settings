@@ -36,6 +36,7 @@
 ;;usually, settings about indentation are written for each language.
 ;;indent settings
 (setq-default indent-tabs-mode nil) ;; use space, not tabs for indent
+(setq-default tab-width 4)
 (setq tab-stop-list (number-sequence 2 60 2))
 
 ;; whitespace-mode
@@ -68,6 +69,10 @@
 (use-package rust-mode
   :ensure t
   :mode "\\.rs\\'")
+
+(use-package go-mode
+  :ensure t
+  :mode "\\.go\\'")
 
 (use-package nasm-mode
   :ensure t
@@ -118,8 +123,9 @@
 (use-package lsp-mode
   :ensure t
   :hook ((python-mode . lsp)
-	 (rust-mode . lsp)
-         (typescript-mode . lsp))
+         (rust-mode . lsp)
+         (typescript-mode . lsp)
+         (go-mode . lsp))
   :commands (lsp)
   :bind
   ("C-c j" . lsp-find-definition)
@@ -180,6 +186,7 @@
   :ensure t
   :config (add-hook 'flycheck-mode-hook #'flycheck-rust-setup)
   )
+
 
 (use-package company
   :ensure t
