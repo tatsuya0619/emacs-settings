@@ -1,11 +1,11 @@
 ;;; init.el --- Initialization file for Emacs
-;;; Commentary: Emacs Startup File --- initialization for Emacs
+;;; Commentary: Emacs Startup File --- initialization for Emacs;;; gpg --homedir ~/.emacs.d/elpa/gnupg --receive-keys 066DAFCB81E42C40
 (require 'package)
 
 (setq package-enable-at-startup nil)
+(package-initialize)
 (add-to-list 'package-archives '("melpa" . "http://melpa.org/packages/"))
 (add-to-list 'package-archives '("marmalade" . "http://marmalade-repo.org/packages/"))
-(add-to-list 'package-archives '("gnu" . "http://elpa.gnu.org/packages/"))
 (package-initialize)
 
 ;; Install 'use-package' if necessary
@@ -21,13 +21,15 @@
 
 ;;global settings
 (setq inhibit-splash-screen t)
-(global-linum-mode t)
+(global-linum-mode 0)
 (show-paren-mode t)
 (setq backup-inhibited t)
 (setq create-lockfiles nil)
+(size-indication-mode t)
 (setq scroll-step 1)
 (menu-bar-mode -1)
 (define-key key-translation-map [?\C-h] [?\C-?])
+(define-key global-map (kbd "C-t") 'other-window)
 (electric-pair-mode t)
 (column-number-mode 1)
 (global-auto-revert-mode 1)
@@ -41,13 +43,13 @@
 
 ;; whitespace-mode
 (global-whitespace-mode 1)
-;;(add-hook 'before-save-hook 'delete-trailing-whitespace)
+(add-hook 'before-save-hook 'delete-trailing-whitespace)
 (setq whitespace-style '(face           ;display with face
                          tabs
                          ;;spaces
                          trailing
                          empty
-;;                         space-mark     ;mappings
+                         ;;                         space-mark     ;mappings
                          tab-mark))
 ;; whitespace
 (set-face-foreground 'whitespace-space "color-51")
@@ -58,10 +60,18 @@
 
 (setq whitespace-display-mappings
       '(
-	(space-mark ?\x3000 [?\□])
-	(space-mark 32 [183] [46])
-	(tab-mark ?\t [?\u00BB ?\t] [?\\ ?\t])
-	))
+        (space-mark ?\x3000 [?\□])
+        (space-mark 32 [183] [46])
+        (tab-mark ?\t [?\u00BB ?\t] [?\\ ?\t])
+        ))
+
+(add-hook 'after-save-hook
+          'executable-make-buffer-file-executable-if-script-p)
+
+
+(use-package dracula-theme
+  :ensure t
+  )
 
 
 ;;major-mode
@@ -104,7 +114,6 @@
         ;;web-mode-offset 2
         web-mode-enable-css-colorization t
         web-mode-enable-auto-pairing t
-        ;;web-mode-enable-comment-keywords t
         web-mode-enable-current-element-highlight t
         )
   )
@@ -113,7 +122,7 @@
   :ensure t
   :mode "\\.md\\'"
   :bind((:map markdown-mode-map)
-	("C-M-y" . livedown-preview)))
+        ("C-M-y" . livedown-preview)))
 
 ;; need to run the below command
 ;; git clone https://github.com/shime/emacs-livedown.git ~/.emacs.d/emacs-livedown
@@ -131,7 +140,8 @@
   ("C-c j" . lsp-find-definition)
   :config
   (setq lsp-prefer-flymake nil)
-  ;(setq lsp-auto-guess-root t)
+  ;;(setq lsp-pyls-server-command '("pyls"))
+                                        ;(setq lsp-auto-guess-root t)
   )
 
 
@@ -158,35 +168,35 @@
   )
 
 
-
 ;; minor-mode
 (use-package helm
   :ensure t
   :bind (("C-x b" . helm-mini)
-	 ("C-x C-f" . helm-find-files)
-	 ("M-x" . helm-M-x)
-	 ("C-c y" . helm-show-kill-ring)
-	 ("C-c o" . helm-occur))
+         ("C-x C-f" . helm-find-files)
+         ("M-x" . helm-M-x)
+         ("C-c y" . helm-show-kill-ring)
+         ("C-c o" . helm-occur))
   :config
-  (helm-mode 1))
+  (helm-mode 1)
+  (setq helm-split-window-default-side 'other)
+  )
 
 
 (use-package flycheck
   :ensure t
   :init (global-flycheck-mode)
-  ;for python3 syntax
-  (setq flycheck-python-pycompile-executable "python3"
-	flycheck-python-pylint-executable "python3"
-	flycheck-python-flake8-executable "python3"
+  ;;for python3 syntax
+  (setq flycheck-python-flake8-executable "python3"
+        flycheck-python-pylint-executable "python3"
+        flycheck-python-pycompile-executable "python3"
         )
   (set-face-foreground 'flycheck-error "#FF0461")
   )
 
-(use-package flycheck-rust
-  :ensure t
-  :config (add-hook 'flycheck-mode-hook #'flycheck-rust-setup)
-  )
-
+;;(use-package flycheck-rust
+;;  :ensure t
+;;  :config (add-hook 'flycheck-mode-hook #'flycheck-rust-setup)
+;;  )
 
 (use-package company
   :ensure t
@@ -205,8 +215,39 @@
 
 (use-package multiple-cursors
   :ensure t
-  :bind (("C-c m c" . mc/edit-lines)
-	 ("C-c m k" . mc/mark-all-like-this)))
+  :bind (
+         ("C-c m c" . mc/edit-lines)
+         ("C-c m k" . mc/mark-all-like-this)
+         )
+  )
+
+(use-package elscreen
+  :ensure t
+  :init
+  (elscreen-start)
+  )
+
+(use-package multi-term
+  :ensure t
+  :config
+  (setq multi-term-program "/bin/bash")
+  (add-to-list 'term-unbind-key-list "C-t")
+  )
+(define-key global-map (kbd "C-c s") 'multi-term)
+
+
+(use-package projectile
+  :ensure t
+  :config
+  (helm-projectile-on)
+  :bind(
+        ("C-c p f" . helm-projectile-find-file)
+        ("C-c p d" . helm-projectile-find-dir)
+        )
+  )
+
+;;(use-package helm-projectile
+;;  :ensure t)
 
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
