@@ -34,6 +34,11 @@
 (column-number-mode 1)
 (global-auto-revert-mode 1)
 
+;; git clone https://github.com/shime/emacs-livedown.git ~/.emacs.d/windsize
+(add-to-list 'load-path (expand-file-name "~/.emacs.d/windsize"))
+(require 'windsize)
+(windsize-default-keybindings)
+
 
 ;;usually, settings about indentation are written for each language.
 ;;indent settings
@@ -75,7 +80,6 @@
 
 
 ;;major-mode
-;;(add-to-list 'load-path (expand-file-name "${HOME}/.cargo/bin/rls"))
 (use-package rust-mode
   :ensure t
   :mode "\\.rs\\'")
@@ -93,12 +97,6 @@
   :mode "\\.ts\\'"
   :config
   (setq typescript-indent-level 2))
-
-;;(use-package tide
-;;  :ensure t
-;;  :hook ((typescript-mode . tide-setup)
-;;         (typescript-mode . tide-hl-identifier-mode)
-;;         (before-save . tide-format-before-save)))
 
 (use-package web-mode
   :ensure t
@@ -141,7 +139,6 @@
   :config
   (setq lsp-prefer-flymake nil)
   ;;(setq lsp-pyls-server-command '("pyls"))
-                                        ;(setq lsp-auto-guess-root t)
   )
 
 
@@ -193,11 +190,6 @@
   (set-face-foreground 'flycheck-error "#FF0461")
   )
 
-;;(use-package flycheck-rust
-;;  :ensure t
-;;  :config (add-hook 'flycheck-mode-hook #'flycheck-rust-setup)
-;;  )
-
 (use-package company
   :ensure t
   :init (global-company-mode)
@@ -246,8 +238,11 @@
         )
   )
 
-;;(use-package helm-projectile
-;;  :ensure t)
+;;resizing windows
+(global-set-key (kbd "S-C-<left>")  'shrink-window-horizontally)
+(global-set-key (kbd "S-C-<right>") 'enlarge-window-horizontally)
+(global-set-key (kbd "S-C-<down>")  'shrink-window)
+(global-set-key (kbd "S-C-<up>")    'enlarge-window)
 
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
