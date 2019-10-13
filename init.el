@@ -238,6 +238,16 @@
         )
   )
 
+(use-package magit
+  :ensure t
+  )
+
+(use-package git-gutter
+  :ensure t
+  :config
+  (global-git-gutter-mode t)
+  )
+
 ;;resizing windows
 (global-set-key (kbd "S-C-<left>")  'shrink-window-horizontally)
 (global-set-key (kbd "S-C-<right>") 'enlarge-window-horizontally)
@@ -249,7 +259,7 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(package-selected-packages (quote (tide))))
+ '(package-selected-packages (quote (git-gutter magit tide))))
 
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
