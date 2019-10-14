@@ -34,10 +34,12 @@
 (column-number-mode 1)
 (global-auto-revert-mode 1)
 
-;; git clone https://github.com/shime/emacs-livedown.git ~/.emacs.d/windsize
+;; git clone https://github.com/grammati/windsize.git ~/.emacs.d/windsize
 (add-to-list 'load-path (expand-file-name "~/.emacs.d/windsize"))
 (require 'windsize)
 (windsize-default-keybindings)
+(setq windsize-cols 16)
+(setq windsize-rows 8)
 
 
 ;;usually, settings about indentation are written for each language.
@@ -247,12 +249,6 @@
   :config
   (global-git-gutter-mode t)
   )
-
-;;resizing windows
-(global-set-key (kbd "S-C-<left>")  'shrink-window-horizontally)
-(global-set-key (kbd "S-C-<right>") 'enlarge-window-horizontally)
-(global-set-key (kbd "S-C-<down>")  'shrink-window)
-(global-set-key (kbd "S-C-<up>")    'enlarge-window)
 
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
