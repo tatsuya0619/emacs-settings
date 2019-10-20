@@ -250,6 +250,55 @@
   (global-git-gutter-mode t)
   )
 
+
+;;python
+(when (executable-find "ipython")
+  (setq python-shell-interpreter "ipython")
+  (setq python-shell-interpreter-args "--simple-prompt -i"))
+
+(defun run-python-sensibly ()
+  (interactive)
+  (run-python)
+  (if (eq (length (window-list)) 1)
+      (progn
+        (split-window-sensibly)
+        (switch-to-buffer-other-window "*Python*")
+        )
+    (progn
+      (switch-to-buffer "*Python*")
+      )
+    )
+  )
+
+;;operate temporaly on another buffer
+(setq ipython-default-run-args "")
+
+(defun ipython-set-run-default-args (string)
+  (interactive "sset args of %%run: ")
+  (setq ipython-default-run-args string)
+  )
+
+;;operate temporaly on another buffer
+(defun ipython-run ()
+  (interactive)
+  (ipython-send-input (concat "%run -d " ipython-default-run-args))
+  (ipython-send-input (concat "b " buffer-file-name ":"
+                              (number-to-string (line-number-at-pos))))
+  (ipython-send-input "r")
+  )
+
+;;just send input string
+(defun ipython-send-input (string)
+  (interactive "s: ")
+  (save-selected-window
+    (switch-to-buffer-other-window "*Python*")
+    (end-of-buffer)
+    (insert string)
+    (comint-send-input)
+    (end-of-buffer)
+    )
+  )
+
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
