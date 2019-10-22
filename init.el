@@ -229,11 +229,12 @@
   )
 (define-key global-map (kbd "C-c s") 'multi-term)
 
-
 (use-package projectile
   :ensure t
-  :config
-  (helm-projectile-on)
+  )
+
+(use-package helm-projectile
+  :ensure t
   :bind(
         ("C-c p f" . helm-projectile-find-file)
         ("C-c p d" . helm-projectile-find-dir)
