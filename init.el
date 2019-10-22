@@ -260,10 +260,16 @@
 
 ;;; custom pdb
 (setq pdb-default-command "python -m pdb")
+(setq pdb-default-script-and-args "")
 
 (defun pdb-set-default-command (cmd)
   (interactive "s: ")
   (setq pdb-default-command cmd)
+  )
+
+(defun pdb-set-default-script-and-args (script)
+  (interactive "s: ")
+  (setq pdb-default-script-and-args script)
   )
 
 (defun pdb-start ()
@@ -272,7 +278,7 @@
       (switch-to-buffer-other-window "*gud-pdb*")
     (let ((pyfile-buffer-name (buffer-name))
           (pyfile-window (selected-window)))
-      (pdb  (concat pdb-default-command " " (buffer-file-name)))
+      (pdb  (concat pdb-default-command " " pdb-default-script-and-args))
       (switch-to-buffer pyfile-buffer-name)
       (switch-to-buffer-other-window "*gud-pdb*")
       (select-window pyfile-window)
@@ -307,6 +313,7 @@
 (add-hook 'python-mode-hook 'my-custom-keymap-python)
 (defun my-custom-keymap-python ()
   (define-key python-mode-map (kbd "C-c C-q") 'pdb-set-default-command)
+  (define-key python-mode-map (kbd "C-c C-w") 'pdb-set-default-script-and-args)
   (define-key python-mode-map (kbd "C-c C-p") 'pdb-start)
   (define-key python-mode-map (kbd "C-c C-s") 'pdb-send-command)
   (define-key python-mode-map (kbd "C-c C-l") 'pdb-send-current-line)
