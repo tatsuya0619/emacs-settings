@@ -257,42 +257,33 @@
   (setq python-shell-interpreter "ipython")
   (setq python-shell-interpreter-args "--simple-prompt -i"))
 
-(defun run-python-sensibly ()
+
+;;; custom pdb
+(setq pdb-default-command "python -m pdb")
+
+(defun pdb-set-default-command (cmd)
+  (interactive "s: ")
+  (setq pdb-default-command cmd)
+  )
+
+(defun pdb-start ()
   (interactive)
-  (run-python)
-  (if (eq (length (window-list)) 1)
-      (progn
-        (split-window-sensibly)
-        (switch-to-buffer-other-window "*Python*")
-        )
-    (progn
-      (switch-to-buffer "*Python*")
+  (if (get-buffer "*gud-pdb*")
+      (switch-to-buffer-other-window "*gud-pdb*")
+    (let ((pyfile-buffer-name (buffer-name))
+          (pyfile-window (selected-window)))
+      (pdb  (concat pdb-default-command " " (buffer-file-name)))
+      (switch-to-buffer pyfile-buffer-name)
+      (switch-to-buffer-other-window "*gud-pdb*")
+      (select-window pyfile-window)
       )
     )
   )
 
-;;operate temporaly on another buffer
-(setq ipython-default-run-args "")
-
-(defun ipython-set-run-default-args (string)
-  (interactive "sset args of %%run: ")
-  (setq ipython-default-run-args string)
-  )
-
-;;operate temporaly on another buffer
-(defun ipython-run ()
-  (interactive)
-  (ipython-send-input (concat "%run -d " ipython-default-run-args))
-  (ipython-send-input (concat "b " buffer-file-name ":"
-                              (number-to-string (line-number-at-pos))))
-  (ipython-send-input "r")
-  )
-
-;;just send input string
-(defun ipython-send-input (string)
+(defun pdb-send-command (string)
   (interactive "s: ")
   (save-selected-window
-    (switch-to-buffer-other-window "*Python*")
+    (switch-to-buffer-other-window "*gud-pdb*")
     (end-of-buffer)
     (insert string)
     (comint-send-input)
@@ -300,11 +291,35 @@
     )
   )
 
+;;operate temporaly on another buffer
+(defun pdb-run-until-current-line ()
+  (interactive)
+  (pdb-send-command "restart")
+  (pdb-send-command (concat "b " buffer-file-name ":" (number-to-string (line-number-at-pos))))
+  (pdb-send-command "c")
+  )
+
+(defun pdb-send-current-line ()
+  (interactive)
+  (pdb-send-command (string-trim (thing-at-point 'line t)))
+  )
+
+(add-hook 'python-mode-hook 'my-custom-keymap-python)
+(defun my-custom-keymap-python ()
+  (define-key python-mode-map (kbd "C-c C-q") 'pdb-set-default-command)
+  (define-key python-mode-map (kbd "C-c C-p") 'pdb-start)
+  (define-key python-mode-map (kbd "C-c C-s") 'pdb-send-command)
+  (define-key python-mode-map (kbd "C-c C-l") 'pdb-send-current-line)
+  (define-key python-mode-map (kbd "C-c C-c") 'pdb-run-until-current-line)
+  )
+
+
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
+ '(flycheck-checker-error-threshold 800)
  '(package-selected-packages (quote (git-gutter magit tide))))
 
 (custom-set-faces
