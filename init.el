@@ -1,4 +1,4 @@
-;;; init.el --- Initialization file for Emacs
+;;; Init.el --- Initialization file for Emacs
 ;;; Commentary: Emacs Startup File --- initialization for Emacs;;; gpg --homedir ~/.emacs.d/elpa/gnupg --receive-keys 066DAFCB81E42C40
 (require 'package)
 
@@ -251,6 +251,16 @@
   (global-git-gutter-mode t)
   )
 
+;;(use-package org-preview-html
+;;  :ensure t
+;;  )
+
+;;org-mode settings
+(global-set-key "\C-cl" 'org-store-link)
+(global-set-key "\C-ca" 'org-agenda)
+(global-set-key "\C-cc" 'org-capture)
+(global-set-key "\C-cb" 'org-switchb)
+(setq org-startup-truncated nil)
 
 ;;python
 (when (executable-find "ipython")
@@ -327,7 +337,10 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(flycheck-checker-error-threshold 800)
- '(package-selected-packages (quote (git-gutter magit tide))))
+ '(org-agenda-files (quote ("~/Documents/test.org" "~/.notes")))
+ '(package-selected-packages
+   (quote
+    (org-preview-html org-preview-html-mode git-gutter magit tide))))
 
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
