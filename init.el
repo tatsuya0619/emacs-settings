@@ -262,6 +262,26 @@ _f_: find file  _d_: find directory  _r_: ripgrep _q_: exit
   (global-git-gutter-mode t)
   )
 
+(use-package dap-mode
+  :ensure t
+  )
+
+(dap-mode 1)
+(dap-ui-mode 1)
+(require 'dap-python)
+(setq dap-python-executable "python3")
+(add-hook 'dap-stopped-hook
+          (lambda (arg) (call-interactively #'dap-hydra)))
+
+(dap-register-debug-template "My App"
+  (list :type "python"
+        :args ""
+        :cwd nil
+        :env '(("DEBUG" . "1"))
+        :target-module (expand-file-name "~/program/tmp/hoge.py")
+        :request "launch"
+        :name "My App in list"))
+
 ;;(use-package org-preview-html
 ;;  :ensure t
 ;;  )
@@ -272,74 +292,6 @@ _f_: find file  _d_: find directory  _r_: ripgrep _q_: exit
 (global-set-key "\C-cc" 'org-capture)
 (global-set-key "\C-cb" 'org-switchb)
 (setq org-startup-truncated nil)
-
-;;python
-(when (executable-find "ipython")
-  (setq python-shell-interpreter "ipython")
-  (setq python-shell-interpreter-args "--simple-prompt -i"))
-
-
-;;; custom pdb
-(setq pdb-default-command "python -m pdb")
-(setq pdb-default-script-and-args "")
-
-(defun pdb-set-default-command (cmd)
-  (interactive "s: ")
-  (setq pdb-default-command cmd)
-  )
-
-(defun pdb-set-default-script-and-args (script)
-  (interactive "s: ")
-  (setq pdb-default-script-and-args script)
-  )
-
-(defun pdb-start ()
-  (interactive)
-  (if (get-buffer "*gud-pdb*")
-      (switch-to-buffer-other-window "*gud-pdb*")
-    (let ((pyfile-buffer-name (buffer-name))
-          (pyfile-window (selected-window)))
-      (pdb  (concat pdb-default-command " " pdb-default-script-and-args))
-      (switch-to-buffer pyfile-buffer-name)
-      (switch-to-buffer-other-window "*gud-pdb*")
-      (select-window pyfile-window)
-      )
-    )
-  )
-
-(defun pdb-send-command (string)
-  (interactive "s: ")
-  (save-selected-window
-    (switch-to-buffer-other-window "*gud-pdb*")
-    (end-of-buffer)
-    (insert string)
-    (comint-send-input)
-    (end-of-buffer)
-    )
-  )
-
-;;operate temporaly on another buffer
-(defun pdb-run-until-current-line ()
-  (interactive)
-  (pdb-send-command "restart")
-  (pdb-send-command (concat "b " buffer-file-name ":" (number-to-string (line-number-at-pos))))
-  (pdb-send-command "c")
-  )
-
-(defun pdb-send-current-line ()
-  (interactive)
-  (pdb-send-command (string-trim (thing-at-point 'line t)))
-  )
-
-(add-hook 'python-mode-hook 'my-custom-keymap-python)
-(defun my-custom-keymap-python ()
-  (define-key python-mode-map (kbd "C-c C-q") 'pdb-set-default-command)
-  (define-key python-mode-map (kbd "C-c C-w") 'pdb-set-default-script-and-args)
-  (define-key python-mode-map (kbd "C-c C-p") 'pdb-start)
-  (define-key python-mode-map (kbd "C-c C-s") 'pdb-send-command)
-  (define-key python-mode-map (kbd "C-c C-l") 'pdb-send-current-line)
-  (define-key python-mode-map (kbd "C-c C-c") 'pdb-run-until-current-line)
-  )
 
 
 (custom-set-variables
