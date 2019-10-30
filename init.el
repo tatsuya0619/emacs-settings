@@ -23,6 +23,8 @@
 (setq inhibit-splash-screen t)
 (global-linum-mode 0)
 (show-paren-mode t)
+(set-face-attribute 'show-paren-match nil
+                    :background "yellow")
 (setq backup-inhibited t)
 (setq create-lockfiles nil)
 (size-indication-mode t)
@@ -239,14 +241,14 @@
   :ensure t
   :bind ("C-_" . hydra-projectile/body)
   :config
-  (defhydra hydra-projectile (:hint nil :exit t)
+  (defhydra hydra-projectile (:exit t :hint nil)
     "
-_f_: find file  _d_: find directory     _r_: ripgrep
+_f_: find file  _d_: find directory  _r_: ripgrep _q_: exit
 "
     ("f" helm-projectile-find-file)
     ("d" helm-projectile-find-dir)
     ("r" helm-projectile-rg)
-    ("q" quit-window "quit" :color blue)
+    ("q" keyboard-quit "quit" :color blue)
     )
   )
 
