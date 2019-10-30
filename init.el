@@ -30,6 +30,7 @@
 (menu-bar-mode -1)
 (define-key key-translation-map [?\C-h] [?\C-?])
 (define-key global-map (kbd "C-t") 'other-window)
+(global-unset-key (kbd "C-_"))
 (electric-pair-mode t)
 (column-number-mode 1)
 (global-auto-revert-mode 1)
@@ -80,6 +81,9 @@
   :ensure t
   )
 
+
+(use-package hydra
+  :ensure t)
 
 ;;major-mode
 (use-package rust-mode
@@ -140,7 +144,6 @@
   ("C-c j" . lsp-find-definition)
   :config
   (setq lsp-prefer-flymake nil)
-  ;;(setq lsp-pyls-server-command '("pyls"))
   )
 
 
@@ -154,7 +157,6 @@
 (use-package helm-lsp
   :ensure t
   :commands helm-lsp-workspace-symbol)
-;;(use-package lsp-treemacs :commands lsp-treemacs-errors-list)
 
 ;; sentence wrap of lsp-ui-doc doesn't work correctly when we split views.
 (use-package lsp-ui
@@ -235,10 +237,17 @@
 
 (use-package helm-projectile
   :ensure t
-  :bind(
-        ("C-c p f" . helm-projectile-find-file)
-        ("C-c p d" . helm-projectile-find-dir)
-        )
+  :bind ("C-_" . hydra-projectile/body)
+  :config
+  (defhydra hydra-projectile (:hint nil :exit t)
+    "
+_f_: find file  _d_: find directory     _r_: ripgrep
+"
+    ("f" helm-projectile-find-file)
+    ("d" helm-projectile-find-dir)
+    ("r" helm-projectile-rg)
+    ("q" quit-window "quit" :color blue)
+    )
   )
 
 (use-package magit
@@ -340,7 +349,7 @@
  '(org-agenda-files (quote ("~/Documents/test.org" "~/.notes")))
  '(package-selected-packages
    (quote
-    (org-preview-html org-preview-html-mode git-gutter magit tide))))
+    (helm-rg hydra org-preview-html org-preview-html-mode git-gutter magit tide))))
 
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
