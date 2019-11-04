@@ -32,7 +32,6 @@
 (menu-bar-mode -1)
 (define-key key-translation-map [?\C-h] [?\C-?])
 (define-key global-map (kbd "C-t") 'other-window)
-(global-unset-key (kbd "C-_"))
 (electric-pair-mode t)
 (column-number-mode 1)
 (global-auto-revert-mode 1)
@@ -137,10 +136,8 @@
 
 (use-package lsp-mode
   :ensure t
-  :hook ((python-mode . lsp)
-         (rust-mode . lsp)
-         (typescript-mode . lsp)
-         (go-mode . lsp))
+  :hook
+  ((c-mode python-mode rust-mode typescript-mode go-mode) . lsp)
   :commands (lsp)
   :bind
   ("C-c j" . lsp-find-definition)
@@ -148,10 +145,6 @@
   (setq lsp-prefer-flymake nil)
   )
 
-
-;;If I didn't install company-lsp,
-;;completion occurs bug.
-;;I dont know why.
 (use-package company-lsp
   :ensure t
   :commands company-lsp)
@@ -233,13 +226,17 @@
   )
 (define-key global-map (kbd "C-c s") 'multi-term)
 
+(use-package realgud-lldb
+  :ensure t
+  )
+
 (use-package projectile
   :ensure t
   )
 
 (use-package helm-projectile
   :ensure t
-  :bind ("C-_" . hydra-projectile/body)
+  :bind ("M-/" . hydra-projectile/body)
   :config
   (defhydra hydra-projectile (:exit t :hint nil)
     "
@@ -264,23 +261,22 @@ _f_: find file  _d_: find directory  _r_: ripgrep _q_: exit
 
 (use-package dap-mode
   :ensure t
+  :commands
+  (dap-hydra)
+  :hook
+  (
+   ((c-mode python-mode rust-mode go-mode) . dap-mode)
+   ((c-mode python-mode rust-mode go-mode) . dap-ui-mode)
+   )
+  :bind
+  ("C-]" . dap-hydra)
+  :init
+  (require 'dap-python)
+  ;;(require 'dap-lldb)
   )
 
-(dap-mode 1)
-(dap-ui-mode 1)
-(require 'dap-python)
-(setq dap-python-executable "python3")
 (add-hook 'dap-stopped-hook
           (lambda (arg) (call-interactively #'dap-hydra)))
-
-(dap-register-debug-template "My App"
-  (list :type "python"
-        :args ""
-        :cwd nil
-        :env '(("DEBUG" . "1"))
-        :target-module (expand-file-name "~/program/tmp/hoge.py")
-        :request "launch"
-        :name "My App in list"))
 
 ;;(use-package org-preview-html
 ;;  :ensure t
@@ -301,9 +297,7 @@ _f_: find file  _d_: find directory  _r_: ripgrep _q_: exit
  ;; If there is more than one, they won't work right.
  '(flycheck-checker-error-threshold 800)
  '(org-agenda-files (quote ("~/Documents/test.org" "~/.notes")))
- '(package-selected-packages
-   (quote
-    (helm-rg hydra org-preview-html org-preview-html-mode git-gutter magit tide))))
+ '(package-selected-packages (quote (helm-rg org-preview-html-mode tide))))
 
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
