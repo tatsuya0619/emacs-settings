@@ -143,6 +143,9 @@
   ("C-c j" . lsp-find-definition)
   :config
   (setq lsp-prefer-flymake nil)
+  ;;read config file from ".flake8" and "setup.cfg"
+  ;;I dont know how to use this function, but works
+  (setq-default lsp-pyls-configuration-sources ["flake8" "setup.cfg" ".flake8"])
   )
 
 (use-package company-lsp
@@ -163,7 +166,6 @@
   (setq lsp-ui-flycheck-enable t)
   )
 
-
 ;; minor-mode
 (use-package helm
   :ensure t
@@ -182,10 +184,7 @@
   :ensure t
   :init (global-flycheck-mode)
   ;;for python3 syntax
-  (setq flycheck-python-flake8-executable "python3"
-        flycheck-python-pylint-executable "python3"
-        flycheck-python-pycompile-executable "python3"
-        )
+  (setq flycheck-python-flake8-executable "python3")
   (set-face-foreground 'flycheck-error "#FF0461")
   )
 
