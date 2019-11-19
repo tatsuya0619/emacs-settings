@@ -146,6 +146,7 @@
   ;;read config file from ".flake8" and "setup.cfg"
   ;;I dont know how to use this function, but works
   (setq-default lsp-pyls-configuration-sources ["flake8" "setup.cfg" ".flake8"])
+  (setq-default lsp-pyls-plugins-pydocstyle-enabled t)
   )
 
 (use-package company-lsp
