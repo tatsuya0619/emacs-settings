@@ -143,10 +143,9 @@
   ("C-c j" . lsp-find-definition)
   :config
   (setq lsp-prefer-flymake nil)
-  ;;read config file from ".flake8" and "setup.cfg"
-  ;;I dont know how to use this function, but works
-  (setq-default lsp-pyls-configuration-sources ["flake8" "setup.cfg" ".flake8"])
+  (setq-default lsp-pyls-configuration-sources ["flake8"])
   (setq-default lsp-pyls-plugins-pydocstyle-enabled t)
+  (setq-default lsp-pyls-plugins-pylint-enabled nil)
   )
 
 (use-package company-lsp
@@ -180,12 +179,16 @@
   (setq helm-split-window-default-side 'other)
   )
 
+(use-package helm-file-preview
+  :ensure t
+  :config
+  (helm-file-preview-mode 1)
+  )
+
 
 (use-package flycheck
   :ensure t
   :init (global-flycheck-mode)
-  ;;for python3 syntax
-  (setq flycheck-python-flake8-executable "python3")
   (set-face-foreground 'flycheck-error "#FF0461")
   )
 
@@ -210,12 +213,6 @@
          ("C-c m c" . mc/edit-lines)
          ("C-c m k" . mc/mark-all-like-this)
          )
-  )
-
-(use-package elscreen
-  :ensure t
-  :init
-  (elscreen-start)
   )
 
 (use-package multi-term
