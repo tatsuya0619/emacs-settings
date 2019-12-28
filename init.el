@@ -215,12 +215,21 @@
          )
   )
 
+(defun toggle-term-mode()
+  (interactive)
+  (if (term-in-line-mode)
+      (term-char-mode)
+    (term-line-mode)))
+
 (use-package multi-term
   :ensure t
   :config
   (setq multi-term-program "/bin/bash")
-  (add-to-list 'term-unbind-key-list "C-t")
+  (add-to-list 'term-unbind-key-list "C-t" "C-c")
+  :bind
+  ("C-c C-j" . toggle-term-mode)
   )
+
 (define-key global-map (kbd "C-c s") 'multi-term)
 
 (use-package realgud-lldb
@@ -293,7 +302,7 @@ _f_: find file  _d_: find directory  _r_: ripgrep _q_: exit
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(flycheck-checker-error-threshold 800)
- '(org-agenda-files (quote ("~/Documents/test.org" "~/.notes")))
+ '(org-agenda-files (quote ("~/.notes.org")))
  '(package-selected-packages (quote (helm-rg org-preview-html-mode tide))))
 
 (custom-set-faces
