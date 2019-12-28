@@ -242,18 +242,32 @@
 
 (use-package helm-projectile
   :ensure t
-  :bind ("M-/" . hydra-projectile/body)
-  :config
-  (defhydra hydra-projectile (:exit t :hint nil)
+  )
+
+(bind-key
+ "M-/"
+   (defhydra hydra-helm-menu (:exit t :hint nil)
     "
 _f_: find file  _d_: find directory  _r_: ripgrep _q_: exit
 "
-    ("f" helm-projectile-find-file)
-    ("d" helm-projectile-find-dir)
-    ("r" helm-projectile-rg)
+    ("f"
+     (if (projectile-project-p)
+         (helm-projectile-find-file)
+       (helm-find-files-1 default-directory))
+     )
+    ("d"
+     (if (projectile-project-p)
+         (helm-projectile-find-dir)
+       (helm-find-files-1 default-directory))
+     )
+    ("r"
+     (if (projectile-project-p)
+         (helm-projectile-rg)
+       (helm-rg ""))
+     )
     ("q" keyboard-quit "quit" :color blue)
     )
-  )
+   )
 
 (use-package magit
   :ensure t
@@ -283,10 +297,6 @@ _f_: find file  _d_: find directory  _r_: ripgrep _q_: exit
 
 (add-hook 'dap-stopped-hook
           (lambda (arg) (call-interactively #'dap-hydra)))
-
-;;(use-package org-preview-html
-;;  :ensure t
-;;  )
 
 ;;org-mode settings
 (global-set-key "\C-cl" 'org-store-link)
