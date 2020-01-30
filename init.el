@@ -3,7 +3,6 @@
 (require 'package)
 
 (setq package-enable-at-startup nil)
-(package-initialize)
 (add-to-list 'package-archives '("melpa" . "http://melpa.org/packages/"))
 (add-to-list 'package-archives '("marmalade" . "http://marmalade-repo.org/packages/"))
 (package-initialize)
@@ -35,6 +34,7 @@
 (electric-pair-mode t)
 (column-number-mode 1)
 (global-auto-revert-mode 1)
+(setq select-enable-clipboard t)
 
 ;; git clone https://github.com/grammati/windsize.git ~/.emacs.d/windsize
 (add-to-list 'load-path (expand-file-name "~/.emacs.d/windsize"))
@@ -234,7 +234,9 @@
 
 (use-package realgud-lldb
   :ensure t
+  :defer t
   )
+(load "realgud")
 
 (use-package projectile
   :ensure t
