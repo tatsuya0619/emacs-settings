@@ -129,6 +129,13 @@
   :bind((:map markdown-mode-map)
         ("C-M-y" . livedown-preview)))
 
+
+(use-package dockerfile-mode
+  :ensure t)
+
+(use-package yaml-mode
+  :ensure t)
+
 ;; need to run the below command
 ;; git clone https://github.com/shime/emacs-livedown.git ~/.emacs.d/emacs-livedown
 (add-to-list 'load-path (expand-file-name "~/.emacs.d/emacs-livedown"))
@@ -190,6 +197,13 @@
   :ensure t
   :init (global-flycheck-mode)
   (set-face-foreground 'flycheck-error "#FF0461")
+  )
+
+(use-package flyspell
+  :ensure t
+  :hook
+  ((python-mode go-mode yaml-mode rust-mode c-mode emacs-lisp-mode dockerfile-mode)
+   . flyspell-prog-mode)
   )
 
 (use-package company
@@ -315,7 +329,9 @@ _f_: find file  _d_: find directory  _r_: ripgrep _q_: exit
  ;; If there is more than one, they won't work right.
  '(flycheck-checker-error-threshold 800)
  '(org-agenda-files (quote ("~/.notes.org")))
- '(package-selected-packages (quote (helm-rg org-preview-html-mode tide))))
+ '(package-selected-packages
+   (quote
+    (yaml-mode flycheck-rust epl f flycheck git-commit git-gutter go-mode helm helm-core helm-file-preview helm-lsp helm-projectile ht hydra load-relative loc-changes lsp-mode lsp-ui lv magit markdown-mode multi-term multiple-cursors nasm-mode pkg-info popup projectile realgud realgud-lldb rust-mode s sphinx-doc spinner test-simple transient tree-mode typescript-mode use-package web-mode with-editor yasnippet helm-rg org-preview-html-mode tide))))
 
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
