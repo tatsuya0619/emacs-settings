@@ -35,7 +35,7 @@
 (column-number-mode 1)
 (global-auto-revert-mode 1)
 (setq select-enable-clipboard t)
-
+(which-function-mode)
 ;; git clone https://github.com/grammati/windsize.git ~/.emacs.d/windsize
 (add-to-list 'load-path (expand-file-name "~/.emacs.d/windsize"))
 (require 'windsize)
@@ -78,6 +78,23 @@
           'executable-make-buffer-file-executable-if-script-p)
 
 
+(use-package spaceline
+  :ensure t
+  )
+
+(use-package spaceline-config
+  :ensure spaceline
+  :config
+  (spaceline-helm-mode 1)
+  (spaceline-emacs-theme)
+  (spaceline-toggle-which-function-on)
+  (spaceline-toggle-flycheck-error-on)
+  (spaceline-toggle-flycheck-warning-on)
+  (spaceline-toggle-flycheck-info-on)
+  (spaceline-toggle-minor-modes-off)
+  (spaceline-toggle-projectile-root-on)
+  )
+
 (use-package dracula-theme
   :ensure t
   )
@@ -90,6 +107,9 @@
 (use-package rust-mode
   :ensure t
   :mode "\\.rs\\'")
+
+(with-eval-after-load 'rust-mode
+  (add-hook 'flycheck-mode-hook #'flycheck-rust-setup))
 
 (use-package go-mode
   :ensure t
@@ -331,7 +351,7 @@ _f_: find file  _d_: find directory  _r_: ripgrep _q_: exit
  '(org-agenda-files (quote ("~/.notes.org")))
  '(package-selected-packages
    (quote
-    (yaml-mode flycheck-rust epl f flycheck git-commit git-gutter go-mode helm helm-core helm-file-preview helm-lsp helm-projectile ht hydra load-relative loc-changes lsp-mode lsp-ui lv magit markdown-mode multi-term multiple-cursors nasm-mode pkg-info popup projectile realgud realgud-lldb rust-mode s sphinx-doc spinner test-simple transient tree-mode typescript-mode use-package web-mode with-editor yasnippet helm-rg org-preview-html-mode tide))))
+    (spaceline spaceline-config yaml-mode flycheck-rust epl f flycheck git-commit git-gutter go-mode helm helm-core helm-file-preview helm-lsp helm-projectile ht hydra load-relative loc-changes lsp-mode lsp-ui lv magit markdown-mode multi-term multiple-cursors nasm-mode pkg-info popup projectile realgud realgud-lldb rust-mode s sphinx-doc spinner test-simple transient tree-mode typescript-mode use-package web-mode with-editor yasnippet helm-rg org-preview-html-mode tide))))
 
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
