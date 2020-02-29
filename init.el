@@ -77,6 +77,11 @@
 (add-hook 'after-save-hook
           'executable-make-buffer-file-executable-if-script-p)
 
+(use-package benchmark-init
+  :ensure t
+  :config
+  ;; To disable collection of benchmark data after init is done.
+  (add-hook 'after-init-hook 'benchmark-init/deactivate))
 
 (use-package spaceline
   :ensure t
@@ -314,25 +319,6 @@ _f_: find file  _d_: find directory  _r_: ripgrep _q_: exit
   :config
   (global-git-gutter-mode t)
   )
-
-(use-package dap-mode
-  :ensure t
-  :commands
-  (dap-hydra)
-  :hook
-  (
-   ((c-mode python-mode rust-mode go-mode) . dap-mode)
-   ((c-mode python-mode rust-mode go-mode) . dap-ui-mode)
-   )
-  :bind
-  ("C-]" . dap-hydra)
-  :init
-  (require 'dap-python)
-  ;;(require 'dap-lldb)
-  )
-
-(add-hook 'dap-stopped-hook
-          (lambda (arg) (call-interactively #'dap-hydra)))
 
 ;;org-mode settings
 (global-set-key "\C-cl" 'org-store-link)
