@@ -275,7 +275,7 @@
   :ensure t
   :defer t
   )
-(load "realgud")
+(require 'realgud)
 
 (use-package projectile
   :ensure t
