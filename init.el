@@ -149,22 +149,19 @@
   )
 
 (use-package markdown-mode
-  :ensure t
-  :mode "\\.md\\'"
-  :bind((:map markdown-mode-map)
-        ("C-M-y" . livedown-preview)))
+  :ensure t)
 
+(use-package markdown-preview-mode
+  :ensure t
+  :hook
+  (markdown-mode . markdown-preview-mode)
+  )
 
 (use-package dockerfile-mode
   :ensure t)
 
 (use-package yaml-mode
   :ensure t)
-
-;; need to run the below command
-;; git clone https://github.com/shime/emacs-livedown.git ~/.emacs.d/emacs-livedown
-(add-to-list 'load-path (expand-file-name "~/.emacs.d/emacs-livedown"))
-(require 'livedown)
 
 (use-package lsp-mode
   :ensure t
@@ -227,9 +224,10 @@
 (use-package flyspell
   :ensure t
   :hook
-  ((python-mode go-mode yaml-mode rust-mode c-mode emacs-lisp-mode dockerfile-mode)
+   ((python-mode go-mode yaml-mode rust-mode c-mode emacs-lisp-mode dockerfile-mode emacs-lisp-mode)
    . flyspell-prog-mode)
-  )
+   ((markdown-mode) . flyspell-mode)
+)
 
 (use-package company
   :ensure t
