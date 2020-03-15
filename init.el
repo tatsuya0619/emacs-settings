@@ -42,6 +42,7 @@
 (windsize-default-keybindings)
 (setq windsize-cols 16)
 (setq windsize-rows 8)
+(setq require-final-newline t)
 
 
 ;;usually, settings about indentation are written for each language.
@@ -118,7 +119,10 @@
 
 (use-package go-mode
   :ensure t
-  :mode "\\.go\\'")
+  :mode "\\.go\\'"
+  :config
+  (add-hook 'before-save-hook 'gofmt-before-save)
+  )
 
 (use-package nasm-mode
   :ensure t
@@ -224,9 +228,8 @@
 (use-package flyspell
   :ensure t
   :hook
-   ((python-mode go-mode yaml-mode rust-mode c-mode emacs-lisp-mode dockerfile-mode emacs-lisp-mode)
-   . flyspell-prog-mode)
-   ((markdown-mode) . flyspell-mode)
+   ((prog-mode). flyspell-prog-mode)
+   ((text-mode) . flyspell-mode)
 )
 
 (use-package company
