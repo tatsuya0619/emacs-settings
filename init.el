@@ -47,7 +47,7 @@
  ("C-c a" . org-agenda)
  ("C-c c" . org-capture)
  ("C-c b" . org-switchb)
- ("C-@" . help-for-help)
+ ("C-z" . help-for-help)
  )
 ;;usually, settings about indentation are written for each language.
 ;;indent settings
