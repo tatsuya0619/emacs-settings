@@ -33,13 +33,35 @@
 (global-auto-revert-mode 1)
 (setq select-enable-clipboard t)
 (which-function-mode)
-;; git clone https://github.com/grammati/windsize.git ~/.emacs.d/windsize
-(add-to-list 'load-path (expand-file-name "~/.emacs.d/windsize"))
-(require 'windsize)
-(windsize-default-keybindings)
-(setq windsize-cols 16)
-(setq windsize-rows 8)
 (setq require-final-newline t)
+
+(defun shrink-window-horizontally-by4()
+  (interactive)
+  (let ((current-prefix-arg 4))
+    (call-interactively 'shrink-window-horizontally)
+    )
+  )
+
+(defun enlarge-window-horizontally-by4()
+  (interactive)
+  (let ((current-prefix-arg 4))
+    (call-interactively 'enlarge-window-horizontally)
+    )
+  )
+
+(defun shrink-window-by4()
+  (interactive)
+  (let ((current-prefix-arg 4))
+    (call-interactively 'shrink-window)
+    )
+  )
+
+(defun enlarge-window-by4()
+  (interactive)
+  (let ((current-prefix-arg 4))
+    (call-interactively 'enlarge-window)
+    )
+  )
 
 (bind-keys*
  ("C-t" . other-window)
@@ -48,6 +70,10 @@
  ("C-c c" . org-capture)
  ("C-c b" . org-switchb)
  ("C-z" . help-for-help)
+ ("S-C-<left>" . shrink-window-horizontally-by4)
+ ("S-C-<right>" . enlarge-window-horizontally-by4)
+ ("S-C-<down>" . shrink-window-by4)
+ ("S-C-<up>" . enlarge-window-by4)
  )
 ;;usually, settings about indentation are written for each language.
 ;;indent settings
