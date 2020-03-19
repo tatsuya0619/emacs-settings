@@ -1,10 +1,9 @@
 ;;; Init.el --- Initialization file for Emacs
-;;; Commentary: Emacs Startup File --- initialization for Emacs;;; gpg --homedir ~/.emacs.d/elpa/gnupg --receive-keys 066DAFCB81E42C40
 (require 'package)
 
 (setq package-enable-at-startup nil)
-(add-to-list 'package-archives '("melpa" . "http://melpa.org/packages/"))
-(add-to-list 'package-archives '("marmalade" . "http://marmalade-repo.org/packages/"))
+(add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/"))
+(add-to-list 'package-archives '("marmalade" . "https://marmalade-repo.org/packages/"))
 (package-initialize)
 
 ;; Install 'use-package' if necessary
@@ -15,8 +14,7 @@
 ;; Enable use-package
 (eval-when-compile
   (require 'use-package))
-;;(require 'diminish)                ;; if you use :diminish
-(require 'bind-key)                ;; if you use any :bind variant
+(require 'bind-key)
 
 ;;global settings
 (setq inhibit-splash-screen t)
@@ -29,8 +27,7 @@
 (size-indication-mode t)
 (setq scroll-step 1)
 (menu-bar-mode -1)
-(define-key key-translation-map [?\C-h] [?\C-?])
-(define-key global-map (kbd "C-t") 'other-window)
+(define-key key-translation-map (kbd "C-h") (kbd "<DEL>"))
 (electric-pair-mode t)
 (column-number-mode 1)
 (global-auto-revert-mode 1)
@@ -44,7 +41,14 @@
 (setq windsize-rows 8)
 (setq require-final-newline t)
 
-
+(bind-keys*
+ ("C-t" . other-window)
+ ("C-c l" . org-store-link)
+ ("C-c a" . org-agenda)
+ ("C-c c" . org-capture)
+ ("C-c b" . org-switchb)
+ ("C-@" . help-for-help)
+ )
 ;;usually, settings about indentation are written for each language.
 ;;indent settings
 (setq-default indent-tabs-mode nil) ;; use space, not tabs for indent
@@ -218,6 +222,11 @@
   (helm-file-preview-mode 1)
   )
 
+(use-package helm-descbinds
+  :ensure t
+  :config
+  (helm-descbinds-mode)
+  )
 
 (use-package flycheck
   :ensure t
@@ -268,9 +277,8 @@
   (add-to-list 'term-unbind-key-list "C-t" "C-c")
   :bind
   ("C-c C-j" . toggle-term-mode)
+  ("C-c s" . multi-term)
   )
-
-(define-key global-map (kbd "C-c s") 'multi-term)
 
 (use-package realgud-lldb
   :ensure t
@@ -321,11 +329,6 @@ _f_: find file  _d_: find directory  _r_: ripgrep _q_: exit
   (global-git-gutter-mode t)
   )
 
-;;org-mode settings
-(global-set-key "\C-cl" 'org-store-link)
-(global-set-key "\C-ca" 'org-agenda)
-(global-set-key "\C-cc" 'org-capture)
-(global-set-key "\C-cb" 'org-switchb)
 (setq org-startup-truncated nil)
 
 
@@ -338,7 +341,7 @@ _f_: find file  _d_: find directory  _r_: ripgrep _q_: exit
  '(org-agenda-files (quote ("~/.notes.org")))
  '(package-selected-packages
    (quote
-    (spaceline spaceline-config yaml-mode flycheck-rust epl f flycheck git-commit git-gutter go-mode helm helm-core helm-file-preview helm-lsp helm-projectile ht hydra load-relative loc-changes lsp-mode lsp-ui lv magit markdown-mode multi-term multiple-cursors nasm-mode pkg-info popup projectile realgud realgud-lldb rust-mode s sphinx-doc spinner test-simple transient tree-mode typescript-mode use-package web-mode with-editor yasnippet helm-rg org-preview-html-mode tide))))
+    (helm-descbinds spaceline spaceline-config yaml-mode flycheck-rust epl f flycheck git-commit git-gutter go-mode helm helm-core helm-file-preview helm-lsp helm-projectile ht hydra load-relative loc-changes lsp-mode lsp-ui lv magit markdown-mode multi-term multiple-cursors nasm-mode pkg-info popup projectile realgud realgud-lldb rust-mode s sphinx-doc spinner test-simple transient tree-mode typescript-mode use-package web-mode with-editor yasnippet helm-rg org-preview-html-mode tide))))
 
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
