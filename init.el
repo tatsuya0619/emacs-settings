@@ -70,6 +70,7 @@
  ("C-c c" . org-capture)
  ("C-c b" . org-switchb)
  ("C-z" . help-for-help)
+ ("M-h" . backward-kill-word)
  ("S-C-<left>" . shrink-window-horizontally-by4)
  ("S-C-<right>" . enlarge-window-horizontally-by4)
  ("S-C-<down>" . shrink-window-by4)
