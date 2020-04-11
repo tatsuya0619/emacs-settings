@@ -145,6 +145,9 @@
   :ensure t
   :mode "\\.rs\\'")
 
+(use-package flycheck-rust
+  :ensure t)
+
 (with-eval-after-load 'rust-mode
   (add-hook 'flycheck-mode-hook #'flycheck-rust-setup))
 
@@ -214,6 +217,8 @@
 
 (use-package company-lsp
   :ensure t
+  :init
+  (setq company-lsp-enable-snippet t)
   :commands company-lsp)
 
 (use-package helm-lsp
@@ -281,7 +286,10 @@
   (setq company-selection-wrap-around t))
 
 (use-package yasnippet
-  :ensure t)
+  :ensure t
+  :config
+  (yas-global-mode 1)
+  )
 
 (use-package multiple-cursors
   :ensure t
@@ -368,7 +376,7 @@ _f_: find file  _d_: find directory  _r_: ripgrep _q_: exit
  '(org-agenda-files (quote ("~/.notes.org")))
  '(package-selected-packages
    (quote
-    (helm-descbinds spaceline spaceline-config yaml-mode flycheck-rust epl f flycheck git-commit git-gutter go-mode helm helm-core helm-file-preview helm-lsp helm-projectile ht hydra load-relative loc-changes lsp-mode lsp-ui lv magit markdown-mode multi-term multiple-cursors nasm-mode pkg-info popup projectile realgud realgud-lldb rust-mode s sphinx-doc spinner test-simple transient tree-mode typescript-mode use-package web-mode with-editor yasnippet helm-rg org-preview-html-mode tide))))
+    (spaceline-config sphinx-doc tree-mode helm-rg org-preview-html-mode tide))))
 
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
