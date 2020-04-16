@@ -34,6 +34,7 @@
 (setq select-enable-clipboard t)
 (which-function-mode)
 (setq require-final-newline t)
+(set-face-background 'mode-line "green")
 
 (defun shrink-window-horizontally-by4()
   (interactive)
