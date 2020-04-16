@@ -110,29 +110,6 @@
 (add-hook 'after-save-hook
           'executable-make-buffer-file-executable-if-script-p)
 
-(use-package benchmark-init
-  :ensure t
-  :config
-  ;; To disable collection of benchmark data after init is done.
-  (add-hook 'after-init-hook 'benchmark-init/deactivate))
-
-(use-package spaceline
-  :ensure t
-  )
-
-(use-package spaceline-config
-  :ensure spaceline
-  :config
-  (spaceline-helm-mode 1)
-  (spaceline-emacs-theme)
-  (spaceline-toggle-which-function-on)
-  (spaceline-toggle-flycheck-error-on)
-  (spaceline-toggle-flycheck-warning-on)
-  (spaceline-toggle-flycheck-info-on)
-  (spaceline-toggle-minor-modes-off)
-  (spaceline-toggle-projectile-root-on)
-  )
-
 (use-package dracula-theme
   :ensure t
   )
@@ -190,12 +167,6 @@
 (use-package markdown-mode
   :ensure t)
 
-(use-package markdown-preview-mode
-  :ensure t
-  :hook
-  (markdown-mode . markdown-preview-mode)
-  )
-
 (use-package dockerfile-mode
   :ensure t)
 
@@ -221,10 +192,6 @@
   :init
   (setq company-lsp-enable-snippet t)
   :commands company-lsp)
-
-(use-package helm-lsp
-  :ensure t
-  :commands helm-lsp-workspace-symbol)
 
 ;; sentence wrap of lsp-ui-doc doesn't work correctly when we split views.
 (use-package lsp-ui
@@ -315,12 +282,6 @@
   ("C-c C-j" . toggle-term-mode)
   ("C-c s" . multi-term)
   )
-
-(use-package realgud-lldb
-  :ensure t
-  :defer t
-  )
-(require 'realgud)
 
 (use-package projectile
   :ensure t
