@@ -345,4 +345,5 @@ _f_: find file  _d_: find directory  _r_: ripgrep _q_: exit
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- )
+ '(helm-selection ((t (:background "brightmagenta" :underline nil))))
+ '(helm-selection-line ((t (:background "brightmagenta")))))
