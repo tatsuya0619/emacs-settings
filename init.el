@@ -149,6 +149,11 @@
   :config
   (setq typescript-indent-level 2))
 
+(use-package tide
+  :ensure t
+  :hook ((typescript-mode . tide-setup)
+         (before-save . tide-format-before-save))
+  )
 (use-package web-mode
   :ensure t
   :mode (("\\.html?\\'" . web-mode)
@@ -339,7 +344,7 @@ _f_: find file  _d_: find directory  _r_: ripgrep _q_: exit
  '(org-agenda-files (quote ("~/.notes.org")))
  '(package-selected-packages
    (quote
-    (spaceline-config sphinx-doc tree-mode helm-rg org-preview-html-mode tide))))
+    (spaceline-config sphinx-doc tree-mode helm-rg org-preview-html-mode))))
 
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
