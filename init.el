@@ -121,7 +121,10 @@
 ;;major-mode
 (use-package rust-mode
   :ensure t
-  :mode "\\.rs\\'")
+  :mode "\\.rs\\'"
+  :config
+  (setq rust-format-on-save t)
+  )
 
 (use-package flycheck-rust
   :ensure t)
