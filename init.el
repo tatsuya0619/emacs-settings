@@ -32,7 +32,6 @@
 (column-number-mode 1)
 (global-auto-revert-mode 1)
 (setq select-enable-clipboard t)
-(which-function-mode)
 (setq require-final-newline t)
 (set-face-background 'mode-line "green")
 
@@ -63,6 +62,27 @@
     (call-interactively 'enlarge-window)
     )
   )
+
+(use-package spaceline
+  :ensure t
+    )
+
+(use-package spaceline-config
+  :ensure spaceline
+  :config
+  (spaceline-helm-mode 1)
+  (spaceline-emacs-theme)
+  (spaceline-toggle-flycheck-error-on)
+  (spaceline-toggle-flycheck-warning-on)
+  (spaceline-toggle-flycheck-info-on)
+  (spaceline-toggle-minor-modes-off)
+  )
+
+;; (use-package benchmark-init
+;;   :ensure t
+;;   :config
+;;   ;; To disable collection of benchmark data after init is done.
+;;     (add-hook 'after-init-hook 'benchmark-init/deactivate))
 
 (bind-keys*
  ("C-t" . other-window)
@@ -243,7 +263,7 @@
 (use-package flyspell
   :ensure t
   :hook
-   ((prog-mode). flyspell-prog-mode)
+   ;;((prog-mode). flyspell-prog-mode)
    ((text-mode) . flyspell-mode)
 )
 
