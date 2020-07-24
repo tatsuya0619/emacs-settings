@@ -33,7 +33,7 @@
 (global-auto-revert-mode 1)
 (setq select-enable-clipboard t)
 (setq require-final-newline t)
-(set-face-background 'mode-line "green")
+(set-face-background 'mode-line "color-22")
 
 (defun shrink-window-horizontally-by4()
   (interactive)
