@@ -192,6 +192,12 @@
         )
   )
 
+(use-package virtualenvwrapper
+  :ensure t
+  :init
+  (venv-initialize-interactive-shells)
+  )
+
 (use-package markdown-mode
   :ensure t)
 
