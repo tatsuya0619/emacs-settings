@@ -127,9 +127,6 @@
         (tab-mark ?\t [?\u00BB ?\t] [?\\ ?\t])
         ))
 
-(add-hook 'after-save-hook
-          'executable-make-buffer-file-executable-if-script-p)
-
 (use-package dracula-theme
   :ensure t
   )
