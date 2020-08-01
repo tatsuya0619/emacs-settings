@@ -36,6 +36,7 @@
 (set-face-background 'mode-line "color-22")
 
 (defun shrink-window-horizontally-by4()
+  "Shrink holizon."
   (interactive)
   (let ((current-prefix-arg 4))
     (call-interactively 'shrink-window-horizontally)
@@ -43,6 +44,7 @@
   )
 
 (defun enlarge-window-horizontally-by4()
+  "Enlarge holizon."
   (interactive)
   (let ((current-prefix-arg 4))
     (call-interactively 'enlarge-window-horizontally)
@@ -50,6 +52,7 @@
   )
 
 (defun shrink-window-by4()
+  "Enlarge."
   (interactive)
   (let ((current-prefix-arg 4))
     (call-interactively 'shrink-window)
@@ -57,6 +60,7 @@
   )
 
 (defun enlarge-window-by4()
+  "Shrink."
   (interactive)
   (let ((current-prefix-arg 4))
     (call-interactively 'enlarge-window)
