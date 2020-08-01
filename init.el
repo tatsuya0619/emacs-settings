@@ -296,11 +296,13 @@
          )
   )
 
-(defun toggle-term-mode()
-  (interactive)
-  (if (term-in-line-mode)
-      (term-char-mode)
-    (term-line-mode)))
+
+;; Use bind-key is better? But it didn't work :(
+(add-hook 'term-mode-hook
+          '(lambda ()
+             (define-key term-mode-map (kbd "C-c C-j") 'term-char-mode)
+             (define-key term-raw-map (kbd "C-c C-j") 'term-line-mode)
+             ))
 
 (use-package multi-term
   :ensure t
@@ -308,7 +310,6 @@
   (setq multi-term-program "/bin/bash")
   (add-to-list 'term-unbind-key-list "C-t" "C-c")
   :bind
-  ("C-c C-j" . toggle-term-mode)
   ("C-c s" . multi-term)
   )
 
