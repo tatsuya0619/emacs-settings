@@ -32,11 +32,11 @@
 (column-number-mode 1)
 (global-auto-revert-mode 1)
 (setq select-enable-clipboard t)
-(which-function-mode)
 (setq require-final-newline t)
-(set-face-background 'mode-line "green")
+(set-face-background 'mode-line "color-22")
 
 (defun shrink-window-horizontally-by4()
+  "Shrink holizon."
   (interactive)
   (let ((current-prefix-arg 4))
     (call-interactively 'shrink-window-horizontally)
@@ -44,6 +44,7 @@
   )
 
 (defun enlarge-window-horizontally-by4()
+  "Enlarge holizon."
   (interactive)
   (let ((current-prefix-arg 4))
     (call-interactively 'enlarge-window-horizontally)
@@ -51,6 +52,7 @@
   )
 
 (defun shrink-window-by4()
+  "Enlarge."
   (interactive)
   (let ((current-prefix-arg 4))
     (call-interactively 'shrink-window)
@@ -58,11 +60,33 @@
   )
 
 (defun enlarge-window-by4()
+  "Shrink."
   (interactive)
   (let ((current-prefix-arg 4))
     (call-interactively 'enlarge-window)
     )
   )
+
+(use-package spaceline
+  :ensure t
+    )
+
+(use-package spaceline-config
+  :ensure spaceline
+  :config
+  (spaceline-helm-mode 1)
+  (spaceline-emacs-theme)
+  (spaceline-toggle-flycheck-error-on)
+  (spaceline-toggle-flycheck-warning-on)
+  (spaceline-toggle-flycheck-info-on)
+  (spaceline-toggle-minor-modes-off)
+  )
+
+;; (use-package benchmark-init
+;;   :ensure t
+;;   :config
+;;   ;; To disable collection of benchmark data after init is done.
+;;     (add-hook 'after-init-hook 'benchmark-init/deactivate))
 
 (bind-keys*
  ("C-t" . other-window)
@@ -107,32 +131,6 @@
         (tab-mark ?\t [?\u00BB ?\t] [?\\ ?\t])
         ))
 
-(add-hook 'after-save-hook
-          'executable-make-buffer-file-executable-if-script-p)
-
-(use-package benchmark-init
-  :ensure t
-  :config
-  ;; To disable collection of benchmark data after init is done.
-  (add-hook 'after-init-hook 'benchmark-init/deactivate))
-
-(use-package spaceline
-  :ensure t
-  )
-
-(use-package spaceline-config
-  :ensure spaceline
-  :config
-  (spaceline-helm-mode 1)
-  (spaceline-emacs-theme)
-  (spaceline-toggle-which-function-on)
-  (spaceline-toggle-flycheck-error-on)
-  (spaceline-toggle-flycheck-warning-on)
-  (spaceline-toggle-flycheck-info-on)
-  (spaceline-toggle-minor-modes-off)
-  (spaceline-toggle-projectile-root-on)
-  )
-
 (use-package dracula-theme
   :ensure t
   )
@@ -144,7 +142,10 @@
 ;;major-mode
 (use-package rust-mode
   :ensure t
-  :mode "\\.rs\\'")
+  :mode "\\.rs\\'"
+  :config
+  (setq rust-format-on-save t)
+  )
 
 (use-package flycheck-rust
   :ensure t)
@@ -169,6 +170,18 @@
   :config
   (setq typescript-indent-level 2))
 
+(use-package js2-mode
+  :ensure t
+  :mode "\\.js\\'"
+  :config
+  (setq js-indent-level 2)
+  )
+
+(use-package tide
+  :ensure t
+  :hook ((typescript-mode . tide-setup)
+         (before-save . tide-format-before-save))
+  )
 (use-package web-mode
   :ensure t
   :mode (("\\.html?\\'" . web-mode)
@@ -187,14 +200,14 @@
         )
   )
 
+(use-package virtualenvwrapper
+  :ensure t
+  :init
+  (venv-initialize-interactive-shells)
+  )
+
 (use-package markdown-mode
   :ensure t)
-
-(use-package markdown-preview-mode
-  :ensure t
-  :hook
-  (markdown-mode . markdown-preview-mode)
-  )
 
 (use-package dockerfile-mode
   :ensure t)
@@ -207,8 +220,6 @@
   :hook
   ((c-mode python-mode rust-mode typescript-mode go-mode) . lsp)
   :commands (lsp)
-  :bind
-  ("C-c j" . lsp-find-definition)
   :config
   (setq lsp-prefer-flymake nil)
   (setq-default lsp-pyls-configuration-sources ["flake8"])
@@ -222,10 +233,6 @@
   (setq company-lsp-enable-snippet t)
   :commands company-lsp)
 
-(use-package helm-lsp
-  :ensure t
-  :commands helm-lsp-workspace-symbol)
-
 ;; sentence wrap of lsp-ui-doc doesn't work correctly when we split views.
 (use-package lsp-ui
   :ensure t
@@ -235,6 +242,9 @@
   (setq lsp-ui-doc-enable nil)
   (setq lsp-ui-flycheck-enable t)
   )
+
+(use-package realgud
+  :ensure t)
 
 ;; minor-mode
 (use-package helm
@@ -270,7 +280,7 @@
 (use-package flyspell
   :ensure t
   :hook
-   ((prog-mode). flyspell-prog-mode)
+   ;;((prog-mode). flyspell-prog-mode)
    ((text-mode) . flyspell-mode)
 )
 
@@ -300,11 +310,13 @@
          )
   )
 
-(defun toggle-term-mode()
-  (interactive)
-  (if (term-in-line-mode)
-      (term-char-mode)
-    (term-line-mode)))
+
+;; Use bind-key is better? But it didn't work :(
+(add-hook 'term-mode-hook
+          '(lambda ()
+             (define-key term-mode-map (kbd "C-c C-j") 'term-char-mode)
+             (define-key term-raw-map (kbd "C-c C-j") 'term-line-mode)
+             ))
 
 (use-package multi-term
   :ensure t
@@ -312,15 +324,8 @@
   (setq multi-term-program "/bin/bash")
   (add-to-list 'term-unbind-key-list "C-t" "C-c")
   :bind
-  ("C-c C-j" . toggle-term-mode)
   ("C-c s" . multi-term)
   )
-
-(use-package realgud-lldb
-  :ensure t
-  :defer t
-  )
-(require 'realgud)
 
 (use-package projectile
   :ensure t
@@ -377,11 +382,13 @@ _f_: find file  _d_: find directory  _r_: ripgrep _q_: exit
  '(org-agenda-files (quote ("~/.notes.org")))
  '(package-selected-packages
    (quote
-    (spaceline-config sphinx-doc tree-mode helm-rg org-preview-html-mode tide))))
+    (spaceline-config sphinx-doc tree-mode helm-rg org-preview-html-mode))))
 
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- )
+ '(helm-selection ((t (:background "brightmagenta" :underline nil))))
+ '(helm-selection-line ((t (:background "brightmagenta"))))
+ '(line-number ((t (:background "unspecified-bg" :foreground "green" :slant italic)))))
