@@ -148,10 +148,11 @@
   )
 
 (use-package flycheck-rust
-  :ensure t)
-
-(with-eval-after-load 'rust-mode
+  :ensure t
+  :config
+  (with-eval-after-load 'rust-mode
   (add-hook 'flycheck-mode-hook #'flycheck-rust-setup))
+ )
 
 (use-package go-mode
   :ensure t
