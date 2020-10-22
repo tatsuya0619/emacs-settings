@@ -227,12 +227,6 @@
   (setq-default lsp-pyls-plugins-pylint-enabled nil)
   )
 
-(use-package company-lsp
-  :ensure t
-  :init
-  (setq company-lsp-enable-snippet t)
-  :commands company-lsp)
-
 ;; sentence wrap of lsp-ui-doc doesn't work correctly when we split views.
 (use-package lsp-ui
   :ensure t
