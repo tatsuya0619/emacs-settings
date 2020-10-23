@@ -139,6 +139,31 @@
 (use-package hydra
   :ensure t)
 
+;; (defun my-god-mode-update-modeline ()
+;;   "Toggle modeline."
+;;   (let ((limited-colors-p (> 257 (length (defined-colors)))))
+;;     (cond (god-local-mode (progn
+;;                             (set-face-background 'mode-line (if limited-colors-p "color-90" "color-90"))
+;;                             (set-face-background 'mode-line-inactive (if limited-colors-p "color-90" "color-90"))))
+;;           (t (progn
+;;                (set-face-background 'mode-line (if limited-colors-p "color-22" "color-22"))
+;;                (set-face-background 'mode-line-inactive (if limited-colors-p "color-22" "color-22")))))))
+
+;; (use-package god-mode
+;;   :ensure t
+;;   :config
+;;   :bind
+;;   (
+;;    :map global-map
+;;    ("C-j" . god-mode-all)
+;;    :map god-local-mode-map
+;;    ("j" . god-local-mode)
+;;    )
+;;   :hook
+;;   (god-mode-enabled . my-god-mode-update-modeline)
+;;   (god-mode-disabled . my-god-mode-update-modeline)
+;;   )
+
 ;;major-mode
 (use-package rust-mode
   :ensure t
@@ -377,7 +402,7 @@ _f_: find file  _d_: find directory  _r_: ripgrep _q_: exit
  '(org-agenda-files (quote ("~/.notes.org")))
  '(package-selected-packages
    (quote
-    (spaceline-config sphinx-doc tree-mode helm-rg org-preview-html-mode))))
+    (ace-window async avy benchmark-init bind-key bui company dap-mode dash dash-functional dockerfile-mode dracula-theme epl f flycheck flycheck-rust format-all git-commit git-gutter go-mode god-mode helm helm-core helm-descbinds helm-file-preview helm-projectile ht hydra js2-mode language-id load-relative loc-changes lsp-mode lsp-treemacs lsp-ui lv magit markdown-mode mini-modeline multi-term multiple-cursors nasm-mode pfuture pkg-info popup posframe powerline projectile realgud realgud-lldb spaceline spinner test-simple tide transient treemacs typescript-mode use-package virtualenvwrapper web-mode with-editor yaml-mode yasnippet spaceline-config sphinx-doc tree-mode helm-rg org-preview-html-mode))))
 
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
