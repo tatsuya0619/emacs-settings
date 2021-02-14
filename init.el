@@ -226,6 +226,12 @@
         )
   )
 
+(use-package prettier
+  :ensure t
+  :hook
+  ((web-mode) . prettier-mode)
+)
+
 (use-package virtualenvwrapper
   :ensure t
   :init
@@ -411,4 +417,5 @@ _f_: find file  _d_: find directory  _r_: ripgrep _q_: exit
  ;; If there is more than one, they won't work right.
  '(helm-selection ((t (:background "brightmagenta" :underline nil))))
  '(helm-selection-line ((t (:background "brightmagenta"))))
- '(line-number ((t (:background "unspecified-bg" :foreground "green" :slant italic)))))
+ '(line-number ((t (:background "unspecified-bg" :foreground "green" :slant italic))))
+ '(web-mode-html-tag-bracket-face ((t (:foreground "white")))))
