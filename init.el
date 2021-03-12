@@ -252,6 +252,8 @@
   :hook
   ((c-mode python-mode rust-mode typescript-mode go-mode) . lsp)
   :commands (lsp)
+  :bind
+  ("M-r" . lsp-rename)
   :config
   (setq lsp-prefer-flymake nil)
   (setq-default lsp-pyls-configuration-sources ["flake8"])
