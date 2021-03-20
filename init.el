@@ -420,4 +420,6 @@ _f_: find file  _d_: find directory  _r_: ripgrep _q_: exit
  '(helm-selection ((t (:background "brightmagenta" :underline nil))))
  '(helm-selection-line ((t (:background "brightmagenta"))))
  '(line-number ((t (:background "unspecified-bg" :foreground "green" :slant italic))))
+ '(lsp-face-highlight-read ((t (:inherit highlight :background "color-92" :underline t))))
+ '(lsp-face-highlight-textual ((t (:inherit highlight :background "color-92"))))
  '(web-mode-html-tag-bracket-face ((t (:foreground "white")))))
